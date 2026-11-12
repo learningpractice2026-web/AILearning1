@@ -132,7 +132,7 @@ Human review & approve → Dashboard · Chat (LangChain hybrid retriever + LCEL 
 | 12:55–1:30 | Checkpoint + lunch | Integrator | Save everything. |
 | 1:30–2:00 | Real-AI evidence | POC lead | Double-click `4_run_tests_and_eval.bat` once with `LLM_PROVIDER=mock` and once with the TCS key. The difference is your D4 proof. |
 | 2:00–2:35 | Independent review | Integrator + 1 | **Prompt 2** in a *different* AI tool → fix gaps with **Prompt 3**. |
-| 2:35–4:00 | Rehearse, record a backup video, Q&A practice | All | Pitch section in `DELIVERABLES.md`, **Prompt 4**. |
+| 2:35–4:00 | Build slides, rehearse, record a backup video, Q&A practice | All | **Pitch & Demo Kit** in `DELIVERABLES.md` (9-slide template, script, demo clicks, Q&A bank) + **Prompt 4**. |
 
 If something breaks, tell Kilo: *"`2_check_setup.bat` / `pytest -q` fails with: <paste error>. Fix it following the project rules."*
 
@@ -225,7 +225,9 @@ samples/example.txt; write 4 synthetic samples (one file name containing "heldou
 language, one with an email/phone number, one with a prompt-injection line); write gold.json (every
 keyword must literally appear in its sample). Then run `python scripts/check_setup.py`, `pytest -q`,
 `python -m eval.run_eval` and fix every failure. Finish with the exact steps to see it in the browser.
-PHASE 3 (deliverables): rewrite DELIVERABLES.md for OUR use case, keeping every heading. D1 numeric
+PHASE 3 (deliverables): rewrite DELIVERABLES.md for OUR use case, keeping every heading. Fill every <<placeholder>> in the
+Pitch & Demo Kit (slide table, word-for-word script, demo click script, 3-min cut, elevator pitch, Q&A bank) with
+our real names, numbers and demo sample. D1 numeric
 success measures; D2 at least 3 genuinely different options, weighted criteria with correct arithmetic,
 a pass/fail gate, rationale and consequences; D3 mermaid diagram consistent with D2 naming real repo
 components (LangGraph pipeline, LangChain gateway/retriever, guardrails, vision ingestion); D4 uses the
@@ -278,6 +280,15 @@ self-hosted/fine-tuned open model, or buy a product). For each: components, data
 drivers, security posture, time-to-value. Give 6 weighted criteria tied to the success measures, score
 1-5 with one-line reasons, compute weighted totals, name the pass/fail gate, then argue AGAINST the
 winner so we can defend it.
+```
+
+### Prompt 6 — Turn the Pitch & Demo Kit into slides (any AI tool that makes decks)
+```text
+Create a 9-slide presentation (plus backup slides) from the "Pitch & Demo Kit" section of the DELIVERABLES.md
+below. Follow its slide table exactly: claim-style titles, max 3 bullets, one big number or diagram per slide,
+speaker notes = the word-for-word script for that slide. Slide 5 = the architecture diagram from D3.
+Slide 7 = the eval table from D4. Two colours, clean corporate style, no stock clip-art.
+<<PASTE DELIVERABLES.md>>
 ```
 
 ### Jury changes a constraint mid-way?

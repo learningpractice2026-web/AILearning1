@@ -10,7 +10,7 @@
 | D3 Target-state architecture | 20 | Architecture lead |
 | D4 POC / validation | 20 | POC lead |
 | D5 Delivery, risks, GenAI use | 15 | Delivery & story lead |
-| Pitch + Q&A | 5 | Everyone |
+| Pitch & Demo Kit + Q&A | 5 (+ makes every other score visible) | Everyone |
 
 ---
 
@@ -291,44 +291,111 @@ Azure OpenAI quota & content filter approval · InfoSec DPIA for meeting recordi
 
 ---
 
-## Pitch script (aim 3 min + jury Q&A)
+## Pitch & Demo Kit (template + word-for-word script)
 
-### 30-second elevator version (for judges walking past)
-"Every IT team loses decisions and tasks in meetings. We turn any meeting recording into verified decisions, owners and deadlines in under a minute — every item backed by a quote from the transcript, approved by a human, then pushed to Jira."
+> **How to use:** every `<<...>>` is a placeholder Kilo fills in Phase 3 from D1–D5 and the eval report. Examples in *italics* are from the sample meeting-notes case, so replace them.
+> **Format the jury expects (from the AI Friday guide):** Problem → Options → Decision → Target state → POC learning → Roadmap/risks → Evidence, with time kept for jury questions. **Total: 7 min = 5 min pitch + live demo inside it, 2 min buffer for Q&A.** If your slot is shorter, use the **3-minute cut** further down.
 
-### 3-minute flow  (Problem → Options → Decision → Demo → Evidence → Roadmap)
-1. **Hook (15 s):** "Our sample unit runs ~60 meetings a day. Ask anyone what was decided on Tuesday's architecture review — nobody knows, and the action items live in someone's notebook."
-2. **Success measures (20 s):** ≥90% action recall, 0 unflagged hallucinations, minutes published in <3 min.
-3. **Options (40 s):** rules vs managed GenAI vs self-hosted vs buy Copilot — show the weighted table; we chose managed GenAI with rules as fallback.
-4. **Live demo (60 s) — lead with the wow:**
-   - Upload architecture review → PII masked banner, injection-warning banner.
-   - Show action items with owners + evidence quotes; one "needs review" item.
-   - Edit an owner, approve, export Jira CSV.
-   - Chat: "What did we decide about messaging?" → cited answer.
-5. **Evidence (30 s):** eval table — rules 100% on dev, 0% on held-out messy standup; LLM `[x]%`. "That is why we didn't ship regex."
-6. **Roadmap + honest close (15 s):** "Extraction, review, RAG and exports work today. Teams auto-pull and Jira write-back are phase 1. It's a product an enterprise could pilot on Monday."
+### A. Slide deck template (9 slides; build it in PowerPoint / Google Slides / Claude Slides)
+Design rules: one message per slide, max 3 bullets, big numbers, no paragraphs. A diagram beats text. Use the same 2 colours throughout.
 
-### Who says what
-| Part | Speaker |
-|---|---|
-| Hook + success | Problem & value lead |
-| Options + decision | Architecture lead |
-| Demo | POC lead (driver) + Integrator (narrates) |
-| Evidence + roadmap | Delivery & risk lead |
-| Q&A routing | Integrator |
+| # | Slide title (say it as a claim, not a topic) | What goes on it | Visual | Speaker | Time |
+|---|---|---|---|---|---|
+| 1 | **<<Product name>>: <<one-line value>>** *(e.g. "MeetIQ: every decision and owner captured in 60 seconds")* | Team name, 5 names with hats | Logo or a single icon | Problem lead | 0:15 |
+| 2 | **The problem costs <<number>> every <<period>>** | 1 pain stat (D1), 1 real-life moment ("Nobody remembers what was decided on Tuesday"), who suffers (3 stakeholders) | One big number | Problem lead | 0:30 |
+| 3 | **Success = <<3 numeric targets>>** | 3 success measures from D1 with targets (e.g. ≥90% action recall, 0 unflagged hallucinations, <3 min to publish) + the riskiest assumption | 3 KPI tiles | Problem lead | 0:20 |
+| 4 | **We compared <<3>> options and chose <<B>>** | D2 weighted table (condensed), the pass/fail gate, one-line rationale, what we gave up | Score table with the winner highlighted | Architecture lead | 0:45 |
+| 5 | **How it works** | D3 diagram: Input → guardrails → LangGraph (extract ↔ validate → verify) → human approval → RAG/exports | Architecture diagram (from D3 mermaid, or the Admin page graph) | Architecture lead | 0:35 |
+| 6 | **Live demo** | Only the title + the URL. Switch to the browser | — | POC lead (driver) + Integrator (narrator) | 1:30 |
+| 7 | **Evidence: what we tested and learned** | D4 table: rules vs LLM on the held-out sample, grounding rate, PII leaks = 0, cost per item, plus "validated vs still assumed" | Before/after bar or table | POC lead | 0:40 |
+| 8 | **Enterprise-ready: security, cost, risk** | 4 icons: PII masking + injection guard · human approval + audit · cost/budget + cache · fallback when AI is down. Top 3 risks + mitigation (D5) | Icon grid | Delivery lead | 0:30 |
+| 9 | **Roadmap: pilot to scale** | Phase 0/1/2/3 (D5) + "How AI helped us / where we overruled AI" (1 line each) + the ask ("Pilot with 1 team in 4 weeks") | Timeline arrow | Delivery lead | 0:25 |
+| — | *Backup slides (not presented)*: full D2 table, D3 detail, eval report, AI usage log, screenshots of every demo step | | | | |
 
-### Backup
-Recorded demo video on desktop · `LLM_PROVIDER=mock` offline mode · screenshots in slides.
+### B. Word-for-word script (5 min). Rehearse it twice with a timer.
+**[Slide 1 · Problem lead · 15 s]**
+"Good afternoon. We are team <<name>>. In the next five minutes we'll show you <<product>>, which turns <<input>> into <<verified output>> in under <<time>>, with a human approving every result."
 
-### Likely jury questions (prepare 1-line answers)
-- Why not just Microsoft Copilot? → custom schema (risks/ADRs), Jira integration, evidence + verifier, provider-agnostic, cost.
-- How do you stop hallucinations? → evidence quote per item, deterministic grounding check, human approval gate.
-- What about confidential client data? → PII masking pre-LLM, Azure tenant, private endpoints, no training, retention policy.
-- What does it cost? → show Admin page tokens/cost; router + cache + budget cap.
-- What if OpenAI is down? → retry, then offline engine; badge shows mode.
-- How do you know it's accurate? → gold set + held-out sample, eval in CI, feedback loop.
-- What changes if the jury changes a constraint (e.g. "no cloud LLM allowed")? → switch `LLM_PROVIDER=ollama` (local Llama), same code; accuracy trade-off measured with the same eval.
-- Where did AI help you / where did you overrule it? → AI usage log section below.
+**[Slide 2 · Problem lead · 30 s]**
+"<<Pain stat>>. *Our sample delivery unit runs about 60 meetings a day*, and <<what goes wrong>>. *Ask anyone what was decided in Tuesday's architecture review: nobody knows, and the action items live in someone's notebook.* The people hurt most are <<stakeholder 1>>, <<stakeholder 2>> and <<stakeholder 3>>."
+
+**[Slide 3 · Problem lead · 20 s]**
+"We defined success before writing any code: <<target 1>>, <<target 2>>, <<target 3>>. Our riskiest assumption was <<assumption>>, so that is exactly what our POC tested."
+
+**[Slide 4 · Architecture lead · 45 s]**
+"We compared <<three>> genuinely different options: <<A: rules / classic ML>>, <<B: managed GenAI with RAG and agents>>, and <<C: self-hosted model or buying a product>>. We scored them on <<six>> weighted criteria. Accuracy was a pass/fail gate, because a cheap tool that misses action items is worthless. <<B>> won with <<score>>. The trade-off we accepted is <<per-token cost / vendor dependency>>, and we mitigate it with model routing, caching and a budget cap."
+
+**[Slide 5 · Architecture lead · 35 s]**
+"Here is the target state. Input comes in as text, PDF, scans, images or audio. Guardrails mask personal data and block prompt injection *before* anything reaches the model. A LangGraph workflow extracts structured data; a validator checks the format and asks the model to repair it if needed; a verifier checks that every item is backed by a quote from the source. A human approves, and only then does it go to Jira, email or the knowledge base. If the AI is down, a rules engine keeps the service running."
+
+**[Slide 6 · LIVE DEMO · 90 s]** → use the click-by-click script in section C.
+
+**[Slide 7 · POC lead · 40 s]**
+"We didn't just demo it, we measured it. On a held-out, messy sample we never tuned on, the rules baseline scored <<x>>% recall and the LLM pipeline scored <<y>>%. Grounding was <<z>>%, and PII leaks were zero. What's validated: <<list>>. What's still an assumption: <<list>>. We're not claiming more than we tested."
+
+**[Slide 8 · Delivery lead · 30 s]**
+"It's built for enterprise from day one. Data is masked before it reaches the model, every action is audited, a human approves before anything leaves the system, every token is costed, *about <<₹ per item>>*, and there's a daily budget cap. Our top risks are <<risk 1, 2, 3>>, each with a mitigation in the architecture."
+
+**[Slide 9 · Delivery lead · 25 s]**
+"Roadmap: a four-week pilot with one team, then <<integrations>>, then scale. AI helped us <<e.g. generate synthetic data and challenge our options>>, and we overruled it when <<e.g. it suggested a second LLM as reviewer; we chose a deterministic verifier for cost and explainability>>. Our ask: <<pilot>>. Thank you, we're happy to take questions."
+
+### C. Live demo: click-by-click (90 s). Driver clicks, narrator talks.
+**Before you go on stage (T-10 min):**
+- [ ] `2_check_setup.bat` shows ALL GOOD on the demo network
+- [ ] App open at http://localhost:8501, **Upload** page ready, browser zoom 125%, other tabs closed, notifications off
+- [ ] The demo sample is chosen in advance: the one with PII + the injection line (+ an image or scanned PDF if you have a vision model)
+- [ ] One record is already processed and approved (in case live processing is slow)
+- [ ] Backup video open in a second window. A switch to `LLM_PROVIDER=mock` takes 30 s
+
+| Time | Driver clicks | Narrator says | Wow moment |
+|---|---|---|---|
+| 0:00 | **Upload** → *Sample data* → pick `<<demo sample>>` → **Analyse with AI** | "This is a real <<input type>> with personal data and a hidden malicious instruction in it." | Live LangGraph steps appear |
+| 0:20 | Point at the banners | "Personal data was masked *before* the AI saw it, and the injection line was caught and treated as plain data." | 🛡️ PII banner + 🚨 injection banner |
+| 0:35 | Scroll the extracted sections | "In <<n>> seconds: <<sections>>, each with an owner, a deadline and a quote proving where it came from." | Evidence quotes |
+| 0:50 | **Review and Export** → *Review & approve* → change one owner → **Save & approve** | "Nothing leaves without a human. Anything the AI couldn't prove is flagged orange for review." | 🔶 needs-review item |
+| 1:05 | *Export* tab → **Jira CSV** (and show the email draft) | "One click to Jira and to the team email." | Download |
+| 1:15 | **Chat** → type the prepared question `<<question>>` | "And months later anyone can ask, with sources cited." | `[R#]` citations |
+| 1:25 | **Admin** → scroll to the pipeline graph + cost | "Every call is logged: tokens, cost, latency, cache hits. Here's the agent workflow." | Graph + cost |
+
+**If something fails live:** don't debug on stage. Say "Let me show you the recorded run", play the video, and carry on. Mention later: "the system also has an offline fallback mode."
+
+### D. The 3-minute cut (if your slot is short)
+Slide 2 (20 s) → Slide 4 (35 s) → Demo steps 0:00–1:15 only (75 s) → Slide 7 (30 s) → Slide 9 (20 s).
+
+### E. 30-second elevator pitch (for judges walking past your table)
+"<<Who>> lose <<what>> because <<why>>. <<Product>> turns <<input>> into <<verified output>> in <<time>>. Every item is backed by a quote from the source and approved by a human, *and* it runs on the TCS LLM with PII masking and cost control. On messy data we never tuned on, it scored <<y>>% versus <<x>>% for rules."
+
+### F. Jury Q&A bank: one-line answers (the Integrator routes each question)
+| Likely question | Answer frame | Who |
+|---|---|---|
+| Why not just use Copilot / an off-the-shelf tool? | Custom schema for our domain, evidence + verifier, our integrations, provider-agnostic, cost control. It was option D in our comparison, and here is why it lost. | Architecture |
+| How do you prevent hallucinations? | Evidence quote per item, a deterministic verifier, the validator repair loop, human approval before export. Ungrounded items are flagged, never hidden. | POC |
+| What about confidential data? | PII masked before the model, TCS-hosted model, no training on our data, audit log, roles, delete on request. | Delivery |
+| What does it cost at scale? | Show the Admin page: ₹<<x>> per item. Router to the cheap model, cache, daily budget. At <<volume>>/day ≈ ₹<<y>>/month. | Delivery |
+| How do you know it's accurate? | Gold set + held-out sample, recall/owner accuracy, run in CI, user 👍/👎 feeds new test cases. | POC |
+| What if the AI service is down? | Retry, then the offline rules engine. The UI shows which mode is running. | Architecture |
+| Does it scale to long documents / 10x volume? | Chunking with overlap and parallel map-reduce today; queue-based workers + Azure AI Search in phase 2. | Architecture |
+| What if we can't use an external LLM? | Switch `LLM_PROVIDER=ollama` (local model), same code; we would re-measure accuracy with the same eval. | Architecture |
+| Bias / responsible AI? | Owners only from explicit statements, no personal scoring, fairness check across names in the eval set. | Problem |
+| What's real vs mocked? | Be honest: <<working list>> works today; <<mocked list>> (e.g. Jira is a CSV import) is roadmap. | Delivery |
+| Where did AI help, where did you overrule it? | AI usage log: <<example 1>> / <<example 2>>. | Integrator |
+| What would you do with one more week? | <<top roadmap item>> + a pilot with real (consented) data. | Problem |
+
+### G. Roles on stage
+| Person (hat) | Speaks | Also does |
+|---|---|---|
+| Problem & value lead | Slides 1–3 | Opens the Q&A |
+| Architecture lead | Slides 4–5 | Technical questions |
+| POC / validation lead | Demo driver, Slide 7 | Keeps the backup video ready |
+| Delivery, risk & story lead | Slides 8–9 | Cost / risk / roadmap questions |
+| Integrator / timekeeper | Narrates the demo | Shows time cards (2 min / 1 min / 30 s), routes questions |
+
+### H. Rehearsal checklist
+- [ ] Full run ≤ 5:00 twice in a row, with a timer
+- [ ] Every number on the slides matches D1–D5 and the eval report (the jury cross-checks)
+- [ ] Each speaker can say their part without reading
+- [ ] Backup video recorded (`Win + G`) and tested
+- [ ] One person has practised 3 hard questions with Prompt 4 (README)
 
 ---
 
