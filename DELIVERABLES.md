@@ -304,13 +304,13 @@ Design rules: one message per slide, max 3 bullets, big numbers, no paragraphs. 
 | 1 | **<<Product name>>: <<one-line value>>** *(e.g. "MeetIQ: every decision and owner captured in 60 seconds")* | Team name, 5 names with hats | Logo or a single icon | Problem lead | 0:15 |
 | 2 | **The problem costs <<number>> every <<period>>** | 1 pain stat (D1), 1 real-life moment ("Nobody remembers what was decided on Tuesday"), who suffers (3 stakeholders) | One big number | Problem lead | 0:30 |
 | 3 | **Success = <<3 numeric targets>>** | 3 success measures from D1 with targets (e.g. ≥90% action recall, 0 unflagged hallucinations, <3 min to publish) + the riskiest assumption | 3 KPI tiles | Problem lead | 0:20 |
-| 4 | **We compared <<3>> options and chose <<B>>** | D2 weighted table (condensed), the pass/fail gate, one-line rationale, what we gave up | Score table with the winner highlighted | Architecture lead | 0:45 |
+| 4 | **We compared <<3>> options and chose <<B>>** | D2 weighted table (condensed), the pass/fail gate, one-line rationale, what we gave up, + "why this AI type" (LLM vs classic ML vs vision/speech) | Score table with the winner highlighted | Architecture lead | 0:45 |
 | 5 | **How it works** | D3 diagram: Input → guardrails → LangGraph (extract ↔ validate → verify) → human approval → RAG/exports | Architecture diagram (from D3 mermaid, or the Admin page graph) | Architecture lead | 0:35 |
 | 6 | **Live demo** | Only the title + the URL. Switch to the browser | — | POC lead (driver) + Integrator (narrator) | 1:30 |
 | 7 | **Evidence: what we tested and learned** | D4 table: rules vs LLM on the held-out sample, grounding rate, PII leaks = 0, cost per item, plus "validated vs still assumed" | Before/after bar or table | POC lead | 0:40 |
 | 8 | **Enterprise-ready: security, cost, risk** | 4 icons: PII masking + injection guard · human approval + audit · cost/budget + cache · fallback when AI is down. Top 3 risks + mitigation (D5) | Icon grid | Delivery lead | 0:30 |
 | 9 | **Roadmap: pilot to scale** | Phase 0/1/2/3 (D5) + "How AI helped us / where we overruled AI" (1 line each) + the ask ("Pilot with 1 team in 4 weeks") | Timeline arrow | Delivery lead | 0:25 |
-| — | *Backup slides (not presented)*: full D2 table, D3 detail, eval report, AI usage log, screenshots of every demo step | | | | |
+| — | *Backup slides (not presented)*: **22-point enterprise checklist (Section I)**, full D2 table, D3 detail, eval report, AI usage log, screenshots of every demo step | | | | |
 
 ### B. Word-for-word script (5 min). Rehearse it twice with a timer.
 **[Slide 1 · Problem lead · 15 s]**
@@ -389,6 +389,69 @@ Slide 2 (20 s) → Slide 4 (35 s) → Demo steps 0:00–1:15 only (75 s) → Sli
 | POC / validation lead | Demo driver, Slide 7 | Keeps the backup video ready |
 | Delivery, risk & story lead | Slides 8–9 | Cost / risk / roadmap questions |
 | Integrator / timekeeper | Narrates the demo | Shows time cards (2 min / 1 min / 30 s), routes questions |
+
+### I. Coverage map: every point from the official guide and the mentor blueprint → where we show it
+Use this as **one backup slide** ("22-point enterprise checklist") and as a self-check before presenting. ✅ = in the app/demo, 📄 = in the deliverables/pitch, 🛣️ = roadmap only. Say that honestly if asked.
+
+**Win the pitch (blueprint, 5 points)**
+| Point | Where |
+|---|---|
+| Problem hook in the first 15 s | Slide 2 script ✅ |
+| Live, rehearsed demo, wow moment first | Section C, demo starts with the guardrail banners ✅ |
+| Honest close: working vs mocked | Slide 7 + Q&A "What's real vs mocked" ✅ |
+| 30-second elevator version | Section E ✅ |
+| Backup demo plan | Section C "If something fails" + offline mode + video ✅ |
+
+**Mentor pointers (6)**
+| Pointer | Where |
+|---|---|
+| Think like a product team: real pain, measurable impact | D1 success measures, slides 2–3 📄 |
+| Choose the right AI: simplest model; justify LLM vs vision vs speech vs traditional ML | D2 options (rules/classic ML vs LLM), router (cheap model first), vision only for scans, Whisper only for audio. **Say on slide 4:** "We use an LLM only for language understanding, rules as fallback, and vision/speech only when the input needs it." 📄✅ |
+| Data strategy & architecture: quality, privacy, governance, APIs | D3, PII masking, synthetic data, `api.py` ✅ |
+| Enterprise-grade: reliability, security, explainability, monitoring, HITL, fallback | Slide 8 + Admin page + Review page ✅ |
+| Storytelling: Problem → Solution → Impact → Demo + roadmap | Slides 2–9 order ✅ |
+| Scope ruthlessly | Prompt 0 caps add-ons at 45 min; POC tests one assumption (D4) 📄 |
+
+**Ready-to-use checklist (22 components)**
+| # | Component | Status | Where / what to say |
+|---|---|---|---|
+| 01 | Auth & role-based access | ✅ | Login with viewer/editor/admin (`AUTH_ENABLED=true`) |
+| 02 | AI guardrails | ✅ | PII mask, prompt-injection block, output PII re-mask, blocked terms |
+| 03 | LLM router | ✅ | Fast model by default, strong model for long input |
+| 04 | Prompt templates (versioned) | ✅ | `prompts/*_v1.md`, per-use-case override |
+| 05 | RAG pipeline | ✅ | Chat page: hybrid retriever + citations |
+| 06 | Caching | ✅ | LangChain LLM cache, cache-hit rate on Admin |
+| 07 | Observability | ✅ | Admin: tokens, latency, errors, audit log |
+| 08 | Fallback strategy | ✅ | Repair loop → offline engine; mock mode |
+| 09 | Human-in-the-loop | ✅ | Review & approve before export |
+| 10 | Accessibility | 🛣️ partly | Streamlit is keyboard-navigable, the theme is high-contrast and text is zoomable. Full WCAG audit and voice input are roadmap. Say so if asked |
+| 11 | Security & privacy | ✅ | Secrets in `.env`, PII masking, audit, delete, no training on data |
+| 12 | API-first | ✅ | FastAPI `/docs` (show it if asked: `uvicorn api:app`) |
+| 13 | Feedback loop | ✅ | 👍/👎 on outputs and chat, shown on Admin |
+| 14 | Cost monitoring | ✅ | Cost per call, daily token budget |
+| 15 | Deployment ready | ✅ | Dockerfile, docker-compose, CI pipeline, `.env` config |
+| 16 | Test data strategy | ✅ | Synthetic samples, gold set, **held-out** sample, edge cases (PII, injection, messy text). The train/val/test split applies only if we train ML. We don't, and that's why we use a held-out set |
+| 17 | Night-time AI jobs | 🛣️ | Roadmap: nightly batch re-index + eval run + summary reports off-peak (CI/scheduler) |
+| 18 | Presentation strategy | ✅ | Polished Streamlit UI + slides; React/Next is optional (API ready) |
+| 19 | Multi-agent design | ✅ | LangGraph: Extractor → Validator (repair) → Verifier → Guard → Store; Admin shows the graph |
+| 20 | Version control & team workflow | 📄 | GitHub repo, one shared source of truth, `usecases/<name>` folder ownership, CI tests on push |
+| 21 | Team roles & ownership | 📄 | Section G (who presents / codes / answers) |
+| 22 | Responsible AI check | 📄✅ | Evidence per item, owners only if explicitly stated, no personal scoring, bias check: compare owner accuracy across name origins/genders in the synthetic eval set (D4) |
+
+**Official supplementary guide**
+| Requirement | Where |
+|---|---|
+| Choose → Understand → Decide → Validate | Prompt 0/1 phases |
+| D1–D5 with "what done looks like" | D1–D5 sections above |
+| ≥2 credible options + trade-offs | D2 (3–4 options, gate, weighted table) |
+| POC validates one risky assumption, 60–75 min | D4 + eval report (rules vs LLM, held-out) |
+| Team hats + working rhythm | README timeline + Section G |
+| Use AI collaboratively; show where AI helped / humans corrected it | AI usage log (below) + slide 9 line |
+| Independent review, QA scorecard, gap register | README Prompt 2 + 3, gap register below |
+| Keep data safe (synthetic / approved) | Synthetic samples, PII masking, slide 8 |
+| 100-mark evaluation | D-section weights shown in the table at the top |
+| Final demonstration + jury challenge / changed constraints | Pitch kit + Q&A bank + README "Jury changes a constraint" prompt |
+| Quick guide: CRAFT prompting, tool choice (AI Genie, AnythingLLM, Dyad, Kilo Code, Codex/Gemini CLI) | Our prompts follow CRAFT (Context, Role, Ask, Format, Tests/constraints). Kilo Code = build, a reasoning model = D2, a different model = review |
 
 ### H. Rehearsal checklist
 - [ ] Full run ≤ 5:00 twice in a row, with a timer
