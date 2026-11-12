@@ -1,0 +1,19 @@
+Meeting: Sprint 18 Planning - Payments Platform
+Date: 2026-11-10
+Participants: Anita (Scrum Master), Rahul (Backend Lead), Priya (Frontend), Vikram (QA), Meera (Product Owner)
+
+[00:00:05] Anita: Good morning everyone. Um, let's start Sprint 18 planning. The goal is to close the payment gateway integration.
+[00:00:21] Meera: From the product side, the priority is the UPI refund flow. The analytics dashboard can wait.
+[00:00:40] Rahul: Agreed. We decided to use JWT authentication for the new payment APIs instead of session tokens.
+[00:01:02] Anita: Okay so the analytics module moves to Sprint 19. Everyone okay with that?
+[00:01:10] Priya: Yes, that works for me.
+[00:01:25] Rahul: I'll fix the refund API timeout issue by Wednesday.
+[00:01:41] Priya: I will complete the the refund status screen by Friday.
+[00:02:03] Anita: Vikram, can you prepare the regression test suite for refunds by Thursday?
+[00:02:15] Vikram: Sure. But, uh, the staging environment has been unstable since Monday, that is a risk for testing.
+[00:02:38] Rahul: The payment gateway sandbox is also blocked because we are still waiting for the vendor API keys.
+[00:02:55] Meera: I'll follow up with the vendor for the sandbox keys by tomorrow.
+[00:03:12] Vikram: Do we need performance testing in this sprint or can it go to the next one?
+[00:03:30] Anita: Good question, we need to confirm with the architecture team. Also, who owns the database index changes?
+[00:03:48] Rahul: We agreed the database migration will happen only after the security review.
+[00:04:02] Anita: Great. Let's wrap up. Thanks everyone.

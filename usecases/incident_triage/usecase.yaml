@@ -1,0 +1,85 @@
+# Second example use case — proves the template is generic (no Python changes needed).
+# Run it with:  USECASE=incident_triage  (in .env), then  python scripts/seed_samples.py
+
+app:
+  name: "AI Incident Triage Copilot"
+  tagline: "Raw incident ticket or email → category, priority, impact, next steps with owners → faster MTTR"
+  icon: "🚨"
+  record_name: "Incident"
+  record_name_plural: "Incidents"
+  input_label: "Incident ticket / email text"
+  input_help: "Paste the ticket description, email thread or chat log."
+  accepts_audio: false
+  dialogue: false
+
+ai:
+  role: "an experienced L2 IT service-desk analyst following ITIL incident management"
+  task: "Triage the incident: classify it, assess business impact, extract symptoms, next steps and missing information."
+  rules:
+    - "Priority: P1 = business down / many users, P2 = major degradation, P3 = single user or workaround exists, P4 = request."
+    - "Only assign an owner to a next step if a person or team is named in the input."
+    - "missing_information = facts the resolver still needs before acting (environment, error code, user count...)."
+
+fields:
+  - name: category
+    label: "Category"
+    options: ["Network", "Application", "Database", "Access", "Hardware", "Security", "Other"]
+    keywords:            # used only by the offline rules engine
+      Network: ["network", "dns", "latency", "packet", "firewall"]
+      Application: ["\\bapi\\b", "application", "\\bapp\\b", "http 5\\d\\d"]
+      Database: ["database", "\\bdb\\b", "-db\\b", "ora-\\d+", "sql", "dba"]
+      Access: ["vpn", "password", "login", "authentication", "access", "locked"]
+      Hardware: ["laptop", "printer", "disk", "server down", "hardware"]
+      Security: ["phishing", "malware", "breach", "suspicious"]
+  - name: priority
+    label: "Priority"
+    options: ["P1", "P2", "P3", "P4"]
+    description: "ITIL priority from impact x urgency"
+    keywords:
+      P1: ["urgent", "all (?:branches|users|customers)", "outage", "customers cannot", "major incident"]
+      P2: ["month end", "a few people", "several users", "degraded", "kinda urgent"]
+      P3: ["single user", "workaround", "only me"]
+      P4: ["request", "how do i", "when possible"]
+
+sections:
+  - key: next_steps
+    label: "Next Steps"
+    icon: "🛠️"
+    description: "Concrete actions to resolve or contain the incident"
+    owner_label: "Assignee"
+    has_deadline: true
+    is_task: true
+    keywords: ["restart", "rollback", "roll back", "escalate", "check", "please", "need to", "will", "assign", "reset", "increase"]
+  - key: impact
+    label: "Business Impact"
+    icon: "📉"
+    description: "Who or what is affected and how badly"
+    owner_label: "Reported by"
+    has_owner: false
+    keywords: ["users?", "customers?", "unable", "cannot", "can't", "down", "outage", "revenue", "sla", "branches", "all"]
+    attributes:
+      - name: severity
+        options: ["critical", "high", "medium", "low"]
+  - key: symptoms
+    label: "Symptoms & Errors"
+    icon: "🩺"
+    description: "Observed errors, messages and technical symptoms"
+    has_owner: false
+    keywords: ["error", "timeout", "timed out", "exception", "failed", "failing", "slow", "500", "503", "refused", "crash"]
+  - key: missing_information
+    label: "Missing Information"
+    icon: "❓"
+    description: "Information still needed from the reporter"
+    has_owner: false
+    keywords: ["\\?$", "not sure", "unknown", "unclear", "no idea", "don't know"]
+
+offline:
+  priority: [next_steps, missing_information, symptoms, impact]
+  min_words: 4
+
+chat:
+  enabled: true
+  examples:
+    - "Which incidents are P1 and who is working on them?"
+    - "Have we seen database timeouts before?"
+    - "What information is still missing for the VPN incident?"

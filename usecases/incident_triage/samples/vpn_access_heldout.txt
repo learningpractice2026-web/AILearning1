@@ -1,0 +1,1 @@
+hi team, since morning a few people from the Pune office cant connect to vpn, it just keeps spinning and then says authentication failed. i think it started after the password policy thing?? me and two others in finance are stuck, month end closing is today so kinda urgent. not sure if the whole office is hit. can someone from the network team look - Ravi maybe? thanks, Sneha

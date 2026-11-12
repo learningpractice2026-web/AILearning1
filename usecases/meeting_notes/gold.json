@@ -1,0 +1,197 @@
+{
+  "_comment": "Hand-labelled ground truth for the synthetic samples. Each expected item = keywords that must ALL appear in one extracted item (case-insensitive). Owners checked for actions.",
+  "sprint_planning.txt": {
+    "decisions": [
+      [
+        "JWT"
+      ],
+      [
+        "analytics",
+        "Sprint 19"
+      ],
+      [
+        "migration",
+        "security review"
+      ]
+    ],
+    "action_items": [
+      {
+        "kw": [
+          "refund API"
+        ],
+        "owner": "Rahul",
+        "deadline": "Wednesday"
+      },
+      {
+        "kw": [
+          "refund status screen"
+        ],
+        "owner": "Priya",
+        "deadline": "Friday"
+      },
+      {
+        "kw": [
+          "regression"
+        ],
+        "owner": "Vikram",
+        "deadline": "Thursday"
+      },
+      {
+        "kw": [
+          "vendor"
+        ],
+        "owner": "Meera",
+        "deadline": "tomorrow"
+      }
+    ],
+    "risks": [
+      [
+        "staging"
+      ],
+      [
+        "sandbox"
+      ]
+    ],
+    "open_questions": [
+      [
+        "performance testing"
+      ],
+      [
+        "database index"
+      ]
+    ]
+  },
+  "architecture_review.txt": {
+    "decisions": [
+      [
+        "Service Bus"
+      ],
+      [
+        "adapter"
+      ]
+    ],
+    "action_items": [
+      {
+        "kw": [
+          "PII masking"
+        ],
+        "owner": "Arjun",
+        "deadline": "Tuesday"
+      },
+      {
+        "kw": [
+          "namespace"
+        ],
+        "owner": "Neha",
+        "deadline": "Friday"
+      },
+      {
+        "kw": [
+          "threat model"
+        ],
+        "owner": "Kavita",
+        "deadline": "end of week"
+      }
+    ],
+    "risks": [
+      [
+        "compliance"
+      ]
+    ],
+    "open_questions": [
+      [
+        "dead-letter"
+      ]
+    ]
+  },
+  "client_escalation.txt": {
+    "decisions": [
+      [
+        "25 MB"
+      ]
+    ],
+    "action_items": [
+      {
+        "kw": [
+          "hotfix",
+          "rollback"
+        ],
+        "owner": "Lokesh",
+        "deadline": "Wednesday"
+      },
+      {
+        "kw": [
+          "CAB request"
+        ],
+        "owner": "Rohit",
+        "deadline": "today"
+      },
+      {
+        "kw": [
+          "status email"
+        ],
+        "owner": "Divya",
+        "deadline": "6 PM"
+      }
+    ],
+    "risks": [
+      [
+        "upload"
+      ],
+      [
+        "CAB approval"
+      ]
+    ],
+    "open_questions": [
+      [
+        "SLA credit"
+      ]
+    ]
+  },
+  "standup_messy_heldout.txt": {
+    "_note": "HELD-OUT: written after the offline heuristics were tuned. Use it to compare engines honestly.",
+    "decisions": [
+      [
+        "dark mode",
+        "2.4"
+      ]
+    ],
+    "action_items": [
+      {
+        "kw": [
+          "push notification"
+        ],
+        "owner": "Kiran",
+        "deadline": "tomorrow"
+      },
+      {
+        "kw": [
+          "Suresh"
+        ],
+        "owner": "Pooja",
+        "deadline": "today"
+      },
+      {
+        "kw": [
+          "crash",
+          "payments"
+        ],
+        "owner": "Amit",
+        "deadline": "Friday"
+      }
+    ],
+    "risks": [
+      [
+        "signing certificate"
+      ],
+      [
+        "release"
+      ]
+    ],
+    "open_questions": [
+      [
+        "Android 9"
+      ]
+    ]
+  }
+}

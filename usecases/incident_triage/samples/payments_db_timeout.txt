@@ -1,0 +1,9 @@
+Subject: URGENT - Payment API failing for all branches
+From: ops.lead@example.com
+
+Since 09:40 the payment API is returning HTTP 500 for all branches. Customers cannot complete UPI payments and the call centre is flooded.
+Logs show "ORA-12170: TNS connect timeout" from the payments-db cluster.
+The DBA team made a listener config change last night, change ticket CHG-4471.
+Neha from the DBA team will roll back CHG-4471 within 30 minutes.
+Please escalate to the payments product owner and post updates on the major incident bridge every 15 minutes.
+We are not sure whether the batch settlement job at 11:00 is also affected?

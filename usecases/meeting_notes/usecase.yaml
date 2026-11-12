@@ -1,0 +1,86 @@
+# =====================================================================================
+# USE-CASE DEFINITION — the ONLY file you normally change for a new problem statement.
+# Drives: LLM prompt + output schema, validation, offline rules engine, UI labels,
+# dashboard, exports, eval. Select it with USECASE=<folder name> in .env
+# =====================================================================================
+
+app:
+  name: "AI Meeting Intelligence"
+  tagline: "Meeting audio or transcript → verified decisions, actions and risks → searchable team memory"
+  icon: "🧠"
+  record_name: "Meeting"                 # singular noun for one processed input
+  record_name_plural: "Meetings"
+  input_label: "Meeting transcript"
+  input_help: "One speaker turn per line, e.g. `Rahul: I'll fix the login API by Friday`"
+  accepts_audio: true                    # show audio upload (Whisper)
+  dialogue: true                         # input has 'Name: text' speaker lines
+
+# ---- how the LLM should behave -------------------------------------------------------
+ai:
+  role: "a meticulous technical project analyst for IT delivery teams"
+  task: "Convert the meeting transcript into structured, accurate project documentation."
+  rules:
+    - "A decision is something the group agreed or approved. Discussion without agreement is NOT a decision."
+    - "owner = the person who committed to or was assigned the task. null if nobody was named."
+    - "deadline = exactly as said ('Friday', 'end of sprint'). null if not stated."
+
+# ---- whole-record fields (one value per input) ------------------------------------------
+fields:
+  - name: category
+    label: "Meeting type"
+    options: ["Standup", "Sprint Planning", "Architecture Review", "Client Call", "Retro", "General"]
+    description: "Type of meeting"
+  - name: sentiment
+    label: "Sentiment"
+    options: ["positive", "neutral", "tense"]
+    description: "Overall tone of the meeting"
+
+# ---- lists of extracted items (each item: text, owner, deadline, evidence, confidence + extra attributes) ----
+sections:
+  - key: decisions
+    label: "Key Decisions"
+    icon: "✅"
+    description: "Decisions the group agreed or approved"
+    owner_label: "Decided by"
+    has_deadline: false
+    keywords: ["decided", "agreed", "approved", "finali[sz]ed", "go with", "going with", "moves? to", "postponed", "deferred", "signed off"]
+  - key: action_items
+    label: "Action Items"
+    icon: "📌"
+    description: "Tasks someone committed to or was assigned"
+    owner_label: "Owner"
+    has_deadline: true
+    is_task: true                       # primary section: dashboard 'open by owner', Jira export
+    keywords: ["i'll", "i will", "i can take", "i am going to", "i'm going to", "can you", "could you", "will you"]
+    attributes:
+      - name: priority
+        options: ["high", "medium", "low"]
+        description: "Urgency implied in the meeting"
+  - key: risks
+    label: "Risks & Blockers"
+    icon: "⚠️"
+    description: "Risks, blockers, dependencies or problems raised"
+    owner_label: "Raised by"
+    has_deadline: false
+    keywords: ["risk", "blocked", "blocker", "blocking", "delay(?:ed)?", "unstable", "concern", "fail(?:s|ed|ing)?", "dependency", "outage", "escalat\\w*", "issue"]
+  - key: open_questions
+    label: "Open Questions"
+    icon: "❓"
+    description: "Questions or topics left unresolved"
+    owner_label: "Asked by"
+    has_deadline: false
+    keywords: ["\\?$", "tbd", "to be decided", "to be confirmed", "needs? confirmation", "need to confirm", "still open"]
+
+# ---- offline rules engine (no-LLM fallback + baseline) ----------------------------------
+offline:
+  priority: [action_items, decisions, open_questions, risks]   # first matching section wins
+  min_words: 5                                                  # ignore very short sentences
+
+# ---- RAG chat ----------------------------------------------------------------------------
+chat:
+  enabled: true
+  examples:
+    - "Who owns the refund API fix and when is it due?"
+    - "What did we decide about messaging?"
+    - "Which blockers are still open?"
+    - "What is pending from the client escalation?"

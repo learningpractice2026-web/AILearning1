@@ -1,0 +1,14 @@
+Meeting: Client Escalation Call - Claims Portal Go-Live
+Date: 2026-11-12
+Participants: Lokesh (Tech Lead), Farhan (Client PM), Divya (Support Lead), Rohit (Release Manager)
+
+Farhan: The claims portal went live on Monday, but users report that the document upload fails for files above 10 MB.
+Divya: We have 46 tickets so far. It is a high priority issue and the client is unhappy.
+Lokesh: The root cause is the API gateway payload limit. We decided to raise the limit to 25 MB and add chunked upload in the next release.
+Rohit: The hotfix deployment needs CAB approval, that is a dependency for Thursday.
+Lokesh: I'll prepare the hotfix and rollback plan by Wednesday.
+Rohit: I will raise the emergency CAB request today.
+Farhan: Can we get a daily status mail until this is closed?
+Divya: Yes. I'll send a daily status email to the client by 6 PM.
+Farhan: What compensation or SLA credit applies for this incident?
+Lokesh: That needs confirmation from the account team, it is still open.

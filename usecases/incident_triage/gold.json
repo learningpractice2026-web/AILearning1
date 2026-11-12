@@ -1,0 +1,17 @@
+{
+  "payments_db_timeout.txt": {
+    "fields": {"category": "Database", "priority": "P1"},
+    "next_steps": [{"kw": ["roll back", "CHG-4471"], "owner": "Neha", "deadline": "30 minutes"}, ["escalate"]],
+    "impact": [["customers"]],
+    "symptoms": [["ORA-12170"]],
+    "missing_information": [["settlement"]]
+  },
+  "vpn_access_heldout.txt": {
+    "_note": "held-out, informal language",
+    "fields": {"category": "Access", "priority": "P2"},
+    "next_steps": [{"kw": ["network team"], "owner": "Ravi"}],
+    "impact": [["month end"]],
+    "symptoms": [["authentication failed"]],
+    "missing_information": [["whole office"]]
+  }
+}

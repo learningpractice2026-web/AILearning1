@@ -1,0 +1,56 @@
+# TEMPLATE — copied by `python scripts/new_usecase.py <name>`. Kilo Code fills this in from the problem statement.
+# Every key is explained. Keep 2-space indentation. Text with ':' or '#' must be in "quotes".
+
+app:
+  name: "AI <Something> Assistant"           # shown as page title
+  tagline: "<input> → <structured output> → <business value>"
+  icon: "🤖"
+  record_name: "Document"                     # what ONE input is called: Meeting / Ticket / Claim / Contract / Resume...
+  record_name_plural: "Documents"
+  input_label: "Document text"
+  input_help: "Paste the text or upload a file."
+  accepts_audio: false                        # true only if input can be a voice recording
+  dialogue: false                             # true if input lines look like 'Name: what they said'
+
+ai:
+  role: "an experienced <domain> analyst"     # who the AI should act as
+  task: "Extract structured, accurate information from the input."
+  rules:                                      # domain rules for the AI (3-6 short lines)
+    - "Only use facts stated in the input."
+
+fields:                                       # ONE value per input (classification). 0-3 fields.
+  - name: category
+    label: "Category"
+    options: ["Type A", "Type B", "Other"]
+    keywords: {}                              # optional, offline engine only: {"Type A": ["word1", "word2"]}
+
+sections:                                     # LISTS of things to extract. 2-5 sections.
+  - key: action_items                         # snake_case, unique
+    label: "Action Items"
+    icon: "📌"
+    description: "Tasks someone must do"
+    owner_label: "Owner"
+    has_owner: true
+    has_deadline: true
+    is_task: true                             # exactly ONE section should be the 'task' list (dashboard + Jira)
+    keywords: ["will", "must", "please", "need to"]   # offline engine regex words
+    attributes: []                            # optional extra columns: [{name: priority, options: [high, medium, low]}]
+  - key: risks
+    label: "Risks"
+    icon: "⚠️"
+    description: "Problems, risks or issues mentioned"
+    has_owner: false
+    keywords: ["risk", "issue", "problem", "delay"]
+
+offline:
+  priority: [action_items, risks]             # order the offline engine checks sections
+  min_words: 4
+
+guardrails:
+  blocked_terms: []                           # output items containing these words are flagged for review
+  max_input_chars: 200000                     # reject huge inputs (cost / abuse guard)
+
+chat:
+  enabled: true
+  examples:
+    - "What are the open action items?"

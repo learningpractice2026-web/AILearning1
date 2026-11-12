@@ -1,0 +1,14 @@
+Title: Master Services Agreement - Nimbus Cloud Hosting (fictional)
+Date: 2026-10-01
+
+1. Parties. This Master Services Agreement is between Acme Insurance Ltd ("Client") and Nimbus Cloud Pvt Ltd ("Supplier").
+2.1 The Supplier shall provide 99.9% monthly availability for the hosting platform.
+2.2 The Supplier must notify the Client of any security incident within 24 hours.
+3.1 The Client shall pay all undisputed invoices within 45 days.
+5.3 The Supplier may terminate this agreement at its sole discretion with 15 days notice.
+7.1 The Client shall indemnify the Supplier against all claims, and the Client's liability is unlimited.
+7.2 The Supplier's liability is capped at fees paid in the previous 3 months.
+9.4 This agreement will auto-renew for successive 3 year terms unless cancelled 180 days before expiry.
+11. Data residency is not specified in this agreement.
+12. The exit and transition assistance plan is to be agreed later.
+Contact for notices: legal@nimbus-example.com

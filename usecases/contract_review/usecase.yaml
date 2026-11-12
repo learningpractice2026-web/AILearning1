@@ -1,0 +1,76 @@
+# Third example: long documents, no dialogue, party-level obligations.
+app:
+  name: "AI Contract Review Assistant"
+  tagline: "Vendor contract → obligations, deadlines, risky clauses, missing protections → faster legal review"
+  icon: "📄"
+  record_name: "Contract"
+  record_name_plural: "Contracts"
+  input_label: "Contract text"
+  input_help: "Upload the contract (PDF/Word, scanned is fine) or paste clauses."
+  accepts_audio: false
+  dialogue: false
+
+ai:
+  role: "a careful commercial contracts analyst for an IT services company"
+  task: "Review the contract and extract obligations, risky clauses and missing protections for a legal reviewer."
+  rules:
+    - "owner = the contracting PARTY responsible (e.g. 'Supplier', 'Client'), never an individual unless named."
+    - "Quote clause numbers in the text when available (e.g. 'Clause 7.2: ...')."
+    - "You are not giving legal advice; flag items for a qualified reviewer."
+
+fields:
+  - name: contract_type
+    label: "Contract type"
+    options: ["MSA", "SOW", "NDA", "SLA", "Licence", "Other"]
+    keywords:
+      MSA: ["master services"]
+      SOW: ["statement of work"]
+      NDA: ["non-disclosure", "confidentiality agreement"]
+      SLA: ["service level"]
+      Licence: ["licen[cs]e"]
+  - name: overall_risk
+    label: "Overall risk"
+    options: ["high", "medium", "low"]
+    keywords:
+      high: ["unlimited liability", "uncapped", "sole discretion", "terminate .* without cause"]
+      low: ["mutual", "capped"]
+
+sections:
+  - key: obligations
+    label: "Obligations & Deadlines"
+    icon: "📌"
+    description: "What each party must do, and by when"
+    owner_label: "Party"
+    has_deadline: true
+    is_task: true
+    keywords: ["shall", "must", "will provide", "agrees to", "is required to"]
+  - key: risky_clauses
+    label: "Risky Clauses"
+    icon: "⚠️"
+    description: "Clauses unfavourable or risky for us (liability, termination, penalties, IP)"
+    owner_label: "Favours"
+    has_owner: false
+    keywords: ["unlimited", "uncapped", "penalt(?:y|ies)", "liquidated damages", "sole discretion", "indemnif\\w*", "terminate", "auto-?renew\\w*"]
+    attributes:
+      - name: severity
+        options: ["high", "medium", "low"]
+  - key: missing_protections
+    label: "Missing Protections"
+    icon: "❓"
+    description: "Standard protections that are absent or unclear (e.g. liability cap, data protection, exit)"
+    has_owner: false
+    keywords: ["not specified", "silent", "no cap", "undefined", "to be agreed", "tbd"]
+
+offline:
+  priority: [risky_clauses, obligations, missing_protections]
+  min_words: 5
+
+guardrails:
+  max_input_chars: 400000
+
+chat:
+  enabled: true
+  examples:
+    - "Which clauses have unlimited liability?"
+    - "What must the Supplier deliver in the first 30 days?"
+    - "Is data protection covered?"

@@ -1,0 +1,14 @@
+Meeting: Daily Standup - Mobile App Team
+Date: 2026-11-13
+Participants: speaker 1 = Kiran, speaker 2 = Pooja, speaker 3 = Amit
+
+00:01 Kiran - ok so yesterday I was mostly on the push notification bug, it's like 80% there, should close it out before lunch tomorrow
+00:22 Pooja - nice. umm for me the iOS build is still red, the signing certificate expired and nobody has access to the Apple account except Suresh
+00:40 Amit - yeah that's going to hurt the release on the 20th if we don't sort it
+00:48 Kiran - can somebody ping Suresh today? Pooja you're closest to him
+00:55 Pooja - yep will do, I'll ping him right after this
+01:10 Amit - also on dark mode, me and Kiran talked and we're dropping it from this release, it goes to 2.4
+01:20 Kiran - right, product already signed off on that
+01:31 Amit - one thing I'm not sure about is whether we still support Android 9, analytics says 3 percent users
+01:40 Kiran - let's park that for the product sync
+01:45 Amit - cool, and I'm picking up the crash on the payments screen, aim is end of day Friday

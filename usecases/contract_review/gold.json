@@ -1,0 +1,15 @@
+{
+  "msa_cloud_vendor.txt": {
+    "fields": {"contract_type": "MSA", "overall_risk": "high"},
+    "obligations": [{"kw": ["99.9%"], "owner": "Supplier"}, {"kw": ["24 hours"], "owner": "Supplier", "deadline": "24 hours"}, {"kw": ["45 days"], "owner": "Client"}],
+    "risky_clauses": [["sole discretion"], ["unlimited"], ["auto-renew"]],
+    "missing_protections": [["Data residency"], ["exit"]]
+  },
+  "nda_heldout.txt": {
+    "_note": "held-out, informal drafting",
+    "fields": {"contract_type": "NDA"},
+    "obligations": [{"kw": ["delete"], "owner": "Beta", "deadline": "31 Dec"}],
+    "risky_clauses": [["publish"]],
+    "missing_protections": [["courts"]]
+  }
+}
